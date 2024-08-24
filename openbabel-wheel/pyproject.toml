@@ -1,0 +1,57 @@
+[tool.poetry]
+version = "0.0.1"
+name = "openbabel-wheel"
+description = ""
+authors = ["Marc Helbling <marc.helbling@aqemia.com>"]
+readme = "README.md"
+package-mode = true
+
+
+[build-system]
+requires = [
+    "scikit-build-core>=0.3.0",
+    "swig",
+]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "openbabel-wheel"
+version = "0.0.1"
+description = "An unofficial repository to distribute pre-built OpenBabel binaries with Python bindings."
+authors = [
+  {name = "Marc Helbling", email = "marc.helbling@aqemia.com"},
+  {name = "Noel O'Boyle", email = "openbabel-discuss@lists.sourceforge.net"},
+]
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+
+[tool.scikit-build]
+minimum-version = "0.3.0"
+
+[tool.scikit-build.cmake.define]
+OBABEL_VERSION = "f495cc6"
+CMAKE_BUILD_TYPE = "Release"
+ENABLE_TESTS = "OFF"
+WITH_INCHI = "ON"
+PYTHON_BINDINGS = "ON"
+RUN_SWIG = "ON"
+# https://scikit-build-core.readthedocs.io/en/latest/cmakelists.html#finding-python
+PYTHON_LIBRARY = "/opt"
+
+[tool.cibuildwheel]
+archs = ["x86_64"]
+build = ["cp311-manylinux_x86_64"]
+test-command = [
+    'python -c "from openbabel import openbabel"',
+    "obabel -:C -oxyz --gen3d",
+]
+
+[tool.cibuildwheel.linux]
+before-all = [
+    "yum install -y zlib-devel-1.2.7 eigen3-devel-3.3.7 libxml2-devel-2.9.1",
+    """cd /project/openbabel-wheel \
+       && mkdir build \
+       && cd build \
+       && cmake -DCMAKE_BUILD_TYPE=Release .. \
+       && make install"""
+]
