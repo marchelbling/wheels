@@ -35,8 +35,7 @@ ENABLE_TESTS = "OFF"
 WITH_INCHI = "ON"
 PYTHON_BINDINGS = "ON"
 RUN_SWIG = "ON"
-# https://scikit-build-core.readthedocs.io/en/latest/cmakelists.html#finding-python
-PYTHON_LIBRARY = "/opt/python/cp311-cp311/lib/"
+Python_ROOT_DIR = "/opt/python/cp311-cp311/"
 
 [tool.cibuildwheel]
 manylinux-x86_64-image = "marchelbling/manylinux2014_x86_64-dev:2ca4f69"

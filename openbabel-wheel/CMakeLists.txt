@@ -17,12 +17,4 @@ FetchContent_GetProperties(openbabel)
 if(NOT openbabel_POPULATED)
   FetchContent_Populate(openbabel)
   add_subdirectory(${openbabel_SOURCE_DIR} ${openbabel_BINARY_DIR})
-
-  # we assume that the python library is installed at the default location
-  if (EXISTS "${openbabel_SOURCE_DIR}/scripts/python/openbabel")
-	  install(
-	    DIRECTORY "${openbabel_SOURCE_DIR}/scripts/python/openbabel"
-	    DESTINATION ${CMAKE_INSTALL_PREFIX}/openbabel
-	  )
-  endif()
 endif()
