@@ -1,0 +1,6 @@
+import os
+import pathlib
+base_dir = pathlib.Path(__file__).parent
+os.environ["BABEL_LIBDIR"] = (base_dir / "lib" / "openbabel" / __version__).as_posix()
+os.environ["BABEL_DATADIR"] = (base_dir / "share" / "openbabel" / __version__).as_posix()
+

@@ -15,8 +15,4 @@ FetchContent_Declare(openbabel
     GIT_REPOSITORY    https://github.com/openbabel/openbabel
     GIT_TAG           ${OBABEL_VERSION}
 )
-FetchContent_GetProperties(openbabel)
-if(NOT openbabel_POPULATED)
-    FetchContent_Populate(openbabel)
-    add_subdirectory(${openbabel_SOURCE_DIR} ${openbabel_BINARY_DIR})
-endif()
+FetchContent_MakeAvailable(openbabel) # this will fetch the repository synchronously and expose ${openbabel_SOURCE_DIR} variable

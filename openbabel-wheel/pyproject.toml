@@ -42,18 +42,25 @@ Python_ROOT_DIR = "/opt/python/cp311-cp311/"
 manylinux-x86_64-image = "marchelbling/manylinux2014_x86_64-dev:2ca4f69"
 archs = ["x86_64"]
 build = ["cp311-manylinux_x86_64"]
-# build-verbosity = 3
+build-verbosity = 2
 test-command = [
-    'python -c "from openbabel import openbabel"',
+    'python -c "from openbabel import openbabel; from openbabel import pybel"',
     "obabel -:C -oxyz --gen3d",
 ]
 
 [tool.cibuildwheel.linux]
 before-all = [
-    "yum install -y zlib-devel-1.2.7 eigen3-devel-3.3.7 libxml2-devel-2.9.1",
-    """cd /project/openbabel-wheel \
-       && mkdir build \
-       && cd build \
-       && cmake -DCMAKE_BUILD_TYPE=Release -DPython_ROOT_DIR=/opt/python/cp311-cp311 .. \
-       && make install"""
+    "yum install -y zip zlib-devel-1.2.7 eigen3-devel-3.3.7 libxml2-devel-2.9.1",
+]
+# see https://github.com/pypa/auditwheel/issues/285
+repair-wheel-command = [
+  "mkdir -p /tmp/unpacked",
+  "cd /tmp/unpacked",
+  "unzip {wheel} -d/tmp/unpacked",
+  "sed -i '/__version__ = \".*\"/r /project/openbabel-wheel/patch.txt' /tmp/unpacked/openbabel/__init__.py",
+  "zip -u {wheel} openbabel/__init__.py",
+  "cd -",
+  "export LD_LIBRARY_PATH=/tmp/unpacked/openbabel/lib:$LD_LIBRARY_PATH",
+  "export PATH=/tmp/unpacked/openbabel/bin:$PATH",
+  "auditwheel repair -w {dest_dir} {wheel}",
 ]
