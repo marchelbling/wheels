@@ -10,7 +10,7 @@ package-mode = true
 [build-system]
 requires = [
     "scikit-build-core>=0.3.0",
-    "swig",
+    "swig"
 ]
 build-backend = "scikit_build_core.build"
 
@@ -24,6 +24,9 @@ authors = [
 ]
 readme = "README.md"
 requires-python = ">=3.11,<3.12"
+
+[project.scripts]
+obabel = "openbabel_wheel.cli:obabel"
 
 [tool.scikit-build]
 minimum-version = "0.10.0"
@@ -52,6 +55,7 @@ test-command = [
 before-all = [
     "yum install -y zip zlib-devel-1.2.7 eigen3-devel-3.3.7 libxml2-devel-2.9.1",
 ]
+
 # see https://github.com/pypa/auditwheel/issues/285
 repair-wheel-command = [
   "mkdir -p /tmp/unpacked",
