@@ -31,6 +31,7 @@ obabel = "openbabel_wheel.cli:obabel"
 [tool.scikit-build]
 minimum-version = "0.10.0"
 wheel.install-dir = "openbabel"
+wheel.exclude = ["**.cmake", "**/include/**", "**/share/man/**"]
 
 [tool.scikit-build.cmake.define]
 OBABEL_VERSION = "f495cc6"
